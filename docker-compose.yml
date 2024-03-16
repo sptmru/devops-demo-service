@@ -12,24 +12,41 @@ services:
       - data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - django-static:/opt/static
   django:
     build:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    entrypoint:
+      - ./django-entrypoint.sh
     ports:
       - "8000:8000"
+    volumes:
+      - django-static:/app/static
     environment:
       DB_NAME: postgres
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: db
       DB_PORT: 5432
+      DJANGO_SUPERUSER_USERNAME: admin1
+      DJANGO_SUPERUSER_EMAIL: admin@admin.com
+      DJANGO_SUPERUSER_PASSWORD: lksajglhasd2
     depends_on:
       - db
 
 volumes:
   data: {}
+  django-static: {}
 # Создать пользователя: docker compose exec -it django python manage.py createsuperuser
 
 # В Dockerfile добавлен вот этот блок (установка Gunicorn из APT и создание миграций):
