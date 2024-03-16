@@ -28,7 +28,7 @@ RUN pip install --target=$PKGS_DIR gunicorn
 FROM base
 ARG SRC_PATH=./devops_demo
 
-ENV PYTHONPATH=/usr/localчц
+ENV PYTHONPATH=/usr/local
 COPY --from=builder /install /usr/local
 
 RUN mkdir -p /app/
