@@ -28,13 +28,18 @@ RUN pip install --target=$PKGS_DIR gunicorn
 FROM base
 ARG SRC_PATH=./devops_demo
 
-ENV PYTHONPATH=/usr/local
+ENV PYTHONPATH=/usr/localчц
 COPY --from=builder /install /usr/local
 
 RUN mkdir -p /app/
 
 COPY $SRC_PATH /app/
 WORKDIR /app
+
+RUN python manage.py makemigrations 
+
+RUN apt-get update
+RUN apt-get install -y gunicorn
 
 ENV SERVICE_DEBUG=False
 ENV SERVICE_DB_PATH=/data
