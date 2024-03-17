@@ -47,11 +47,3 @@ services:
 volumes:
   data: {}
   django-static: {}
-# Создать пользователя: docker compose exec -it django python manage.py createsuperuser
-
-# В Dockerfile добавлен вот этот блок (установка Gunicorn из APT и создание миграций):
-
-# RUN python manage.py makemigrations
-
-# RUN apt-get update
-# RUN apt-get install -y gunicorn
